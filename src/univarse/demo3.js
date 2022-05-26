@@ -42,14 +42,15 @@ export default function init() {
   new GLTFLoader()
     .load('https://nft-ic.oss-cn-shanghai.aliyuncs.com/collection.glb', function (gltf) {
       gltf.scene.traverse((child) => {
-        child.frustumCulled = true
-        //模型阴影
-        child.castShadow = true
-        //模型自发光
-        // @ts-ignore
-        // child.material.emissive = child.material.color
-        // @ts-ignore
-        // child.material.emissiveMap = child.material.map
+        if ( child.isMesh&&child.material.map &&child.material.emissive&&child.material.color) {
+          child.frustumCulled = false;
+          //模型阴影
+          child.castShadow = true;
+          //模型自发光
+          child.material.emissive =  child.material.color;
+          child.material.emissiveMap = child.material.map ;
+        }
+
       })
       scene.add(gltf.scene)
 
